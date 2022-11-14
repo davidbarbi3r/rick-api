@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "rick-api"
+version = "0.1.0"
+description = ""
+authors = ["davidbarbi3r <davidbarbi3r@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rick_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
