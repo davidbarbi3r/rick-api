@@ -8,6 +8,10 @@ packages = [{include = "rick_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+psycopg2-binary = "^2.9.5"
+pylint = "^2.15.5"
+python-dotenv = "^0.21.0"
+
 
 
 [build-system]
