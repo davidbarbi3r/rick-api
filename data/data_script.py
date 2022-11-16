@@ -1,15 +1,6 @@
 import json
-import psycopg2
-import os
-from dotenv import load_dotenv, find_dotenv
+from database.database import Database
 
-load_dotenv(find_dotenv())
-
-USER_NAME = os.getenv('POSTGRES_USER')
-USER_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-
-conn = psycopg2.connect(dbname="postgres", host="localhost", user=USER_NAME, password=USER_PASSWORD)
-cur = conn.cursor()
 
 characters_data = open("data/rick_morty-characters_v1.json").read()
 characters_obj = json.loads(characters_data)
@@ -26,7 +17,7 @@ for character in characters_obj:
     type_char = character.get("type")
     gender = character.get("gender")
     insert_query = "INSERT INTO characters(id,name,status,species,type,gender) VALUES(%s, %s, %s, %s, %s, %s)"
-    cur.execute(insert_query, (id_char, name, status, species, type_char, gender))
+    Database.query(insert_query, (id_char, name, status, species, type_char, gender))
 
 for episode in episodes_obj:
     id_ep = episode.get("id")
@@ -34,7 +25,14 @@ for episode in episodes_obj:
     air_date = episode.get("air_date")
     episode = episode.get("episode")
     insert_query = "INSERT INTO episodes(id, name, air_date, episode) VALUES(%s, %s, %s, %s)"
-    cur.execute(insert_query, (id_ep, name, air_date, episode))
+    Database.query(insert_query, (id_ep, name, air_date, episode))
 
-conn.commit()
-conn.close()
+for character in characters_obj:
+    for episode in episodes_obj:
+        id_char = character.get("id")
+        id_ep = episode.get("id")
+        insert_query = "INSERT INTO characters_episodes(id_characters, id_episodes) VALUES(%s, %s)"
+        Database.query(insert_query, (id_char, id_ep))
+
+Database.commit()
+Database.close()
