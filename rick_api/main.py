@@ -1,11 +1,14 @@
 from fastapi import FastAPI
-from routes.characters import router as char_route
-from routes.episodes import router as ep_route
+from .infra.database import Database
+from .routes.characters import router as char_route
+from .routes.episodes import router as ep_route
 
+db = Database()
 app = FastAPI()
 
 app.include_router(char_route)
 app.include_router(ep_route)
+
 
 @app.get("/")
 async def root():

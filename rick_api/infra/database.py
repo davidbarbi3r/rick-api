@@ -30,6 +30,24 @@ class Database():
             self.conn.rollback()
             print(e)
 
+    def get(self, what, where, join = True, table_join = "", join_key1 = "", join_key2 = ""):
+        
+        if not join:
+            select_query = f"SELECT {what} FROM {where}"
+        else:
+            select_query = f"SELECT {what} FROM {where} INNER JOIN {table_join} ON {join_key1} = {join_key2}"
+        
+        ## To prevent SQL Injections
+        select_query.replace("--", "")
+        
+        try:
+            data = self.cur.execute(select_query)
+            return data
+        
+        except psycopg2.DatabaseError as e:
+            print(e)
+            pass
+
     def close(self):
         self.cur.close()
         self.conn.close()
