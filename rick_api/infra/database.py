@@ -38,7 +38,8 @@ class Database():
             select_query = f"SELECT {what} FROM {where} INNER JOIN {table_join} ON {join_key1} = {join_key2}"
         
         ## To prevent SQL Injections
-        select_query.replace("--", "")
+        for char in select_query: 
+            char.replace("-", "")
         
         try:
             data = self.cur.execute(select_query)
